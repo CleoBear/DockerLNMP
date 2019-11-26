@@ -1,0 +1,21 @@
+version: '3.7'
+services:
+    webserver:
+      image: nginx:1.16.1
+      ports: 
+        - "8888:8888"
+      volumes:
+        # 映射主机./conf.d目录到容器/etc/nginx/conf.d目录
+        - "${CONF_D_PATH}:/etc/nginx/conf.d"
+        - "${CODE_PATH}:/usr/share/nginx/html"
+        - "${LOG_PATH}:/var/log/nginx"
+      command: [nginx-debug, '-g', 'daemon off;']
+      depends_on:
+        - "php"
+    php:
+        build: ./php
+        # image指定build Dockerfile生成镜像的名称
+        ports:
+          - "9000:9000"
+        volumes:
+          - "${CODE_PATH}:/usr/share/nginx/html"
