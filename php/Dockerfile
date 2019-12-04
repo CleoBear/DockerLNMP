@@ -5,12 +5,15 @@ RUN apt-get update \
         libzip-dev \
         zip \
         libpng-dev \
+        vim \
     && docker-php-ext-install pdo_mysql\
     && pecl install -o -f redis \
+    && pecl install swoole \
     && docker-php-ext-enable redis \
     && docker-php-ext-configure zip --with-libzip \
     && docker-php-ext-install zip \
-    && docker-php-ext-install gd
+    && docker-php-ext-install gd \
+    && docker-php-ext-enable redis swoole
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 #RUN curl --silent --show-error https://getcomposer.org/installer | php
